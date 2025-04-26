@@ -1,5 +1,12 @@
 ## Distribution-aware Forgetting Compensation for Exemplar-Free Lifelong Person Re-identification [[Paper]]()
 
+<div align="center"> 
+  
+[![arXiv](https://img.shields.io/badge/arXiv-2504.15041-b31b1b?logo=arxiv)](https://arxiv.org/abs/2504.15041)
+
+</div>
+
+# Introduction
 ```
 Our work proposes a novel Distribution-aware Forgetting Compensation (DAFC) model that explores cross-domain shared representation learning and domain-specific distribution integration without relying on old exemplars or knowledge distillation.
 ```
