@@ -1,4 +1,4 @@
-## Distribution-aware Forgetting Compensation for Exemplar-Free Lifelong Person Re-identification [[Paper]]()
+## Distribution-aware Forgetting Compensation for Exemplar-Free Lifelong Person Re-identification
 
 <div align="center"> 
   
