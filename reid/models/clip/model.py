@@ -279,8 +279,6 @@ class VisionTransformer(nn.Module):
         x12 = self.ln_post(x12)
         return x12
 
-
-
 class CLIP(nn.Module):
     def __init__(self,
                  embed_dim: int,

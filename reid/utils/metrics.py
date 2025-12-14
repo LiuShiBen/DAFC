@@ -106,7 +106,7 @@ class R1_mAP_eval():
         self.pids.extend(np.asarray(pid.cpu()))
         self.camids.extend(np.asarray(camid.cpu()))
 
-    def compute(self):  # called after each epoch
+    def compute(self, query=None, gallery=None):  # called after each epoch
         feats = torch.cat(self.feats, dim=0)
         if self.feat_norm:
             print("The test feature is normalized")
@@ -123,9 +123,14 @@ class R1_mAP_eval():
 
         print('=> Computing DistMat with euclidean_distance')
         distmat = euclidean_distance(qf, gf)
+        '''if True:
+            from reid.utils.visualize_rank_result import visualize_ranked_results
+            visualize_ranked_results(distmat, query, gallery, data_type='image', width=128, height=256, save_dir='./rank_dukemtmc')
+        print("sucessful..............")'''
         cmc, mAP = eval_func(distmat, q_pids, g_pids, q_camids, g_camids)
 
         return cmc, mAP, distmat, self.pids, self.camids, qf, gf
+
 
 
 

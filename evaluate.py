@@ -18,8 +18,6 @@ from reid.datasets import get_data
 from reid.models.vit_pytorch import build_vit_backbone
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
-import copy
-from config import cfg
 
 def main():
     args = parser.parse_args()
@@ -42,11 +40,6 @@ def main_worker(args):
         sys.stdout = Logger(osp.join(log_dir, log_name))
     print("==========\nArgs:{}\n==========".format(args))
 
-    # read parameters
-    if args.config_file != "":
-        cfg.merge_from_file(args.config_file)
-    cfg.merge_from_list(args.opts)
-    cfg.freeze()
 
     # Create data loaders
     dataset_viper, num_classes_viper, train_loader_viper, test_loader_viper, _ = \
@@ -90,6 +83,7 @@ def main_worker(args):
     num_classes_total = num_classes_cuhk03 + num_classes_market + num_classes_dukemtmc + num_classes_cuhksysu + num_classes_msmt17
     # model = build_resnet_backbone(num_class=num_classes_total, depth='50x')
     model = build_vit_backbone(num_class=num_classes_total, args=args)
+    #print(model)
     old_model = build_vit_backbone(num_class=num_classes_total, args=args)
     model.cuda()
     old_model.cuda()
@@ -101,7 +95,6 @@ def main_worker(args):
         # model.load_param(args.resume_working)
         copy_state_dict(current_checkpoint['state_dict'], model)
         copy_state_dict(old_checkpoint['state_dict'], old_model)
-
 
     epoch = current_checkpoint['epoch']
 
@@ -122,19 +115,10 @@ def main_worker(args):
     test_loaders = [test_loader_viper, test_loader_Grid, test_loader_cuhk03, test_loader_cuhk02, test_loader_Duke, test_loader_Reid,
                     test_loader_prid, test_loader_market, test_loader_dukemtmc, test_loader_cuhksysu,
                     test_loader_msmt17]
-    '''names = ['viper', 'Grid', 'CUHK02', 'Occluded_Duke', 'Occluded_REID', 'prid2011', 'market']
-    evaluators = [R1_mAP_eval(len(dataset_viper.query), max_rank=50, feat_norm=True),
-                  R1_mAP_eval(len(dataset_Grid.query), max_rank=50, feat_norm=True),
-                  R1_mAP_eval(len(dataset_cuhk02.query), max_rank=50, feat_norm=True),
-                  R1_mAP_eval(len(dataset_Duke.query), max_rank=50, feat_norm=True),
-                  R1_mAP_eval(len(dataset_Reid.query), max_rank=50, feat_norm=True),
-                  R1_mAP_eval(len(dataset_prid.query), max_rank=50, feat_norm=True)]
-    test_loaders = [test_loader_viper, test_loader_Grid, test_loader_cuhk02, test_loader_Duke,
-                    test_loader_Reid, test_loader_prid]'''
     training_phase = args.num_step
+
     # Start evaluating
     for evaluator, name, test_loader in zip(evaluators, names, test_loaders):
-        #eval_func(epoch, evaluator, model, test_loader, name, old_model)
         eval_func(epoch, evaluator, model, test_loader, name, training_phase, old_model=old_model)
 
     print('finished')
@@ -165,8 +149,8 @@ if __name__ == '__main__':
     parser.add_argument('--stride_size', type=int, default=[16,16])
     parser.add_argument('--num_step', type=int, default=5)
     parser.add_argument('--num_task_experts', type=int, default=5)
-    parser.add_argument('--total_experts', type=int, default=25)   #num_task_experts* num_task
-    parser.add_argument('--prompt_param', type=int, default=[128,10,20])
+    parser.add_argument('--total_experts', type=int, default=25)   #num_task_experts* num_step
+    parser.add_argument('--prompt_param', type=int, default=[128,8,20])
 
     parser.add_argument('--features', type=int, default=0)
     parser.add_argument('--dropout', type=float, default=0)
@@ -179,9 +163,9 @@ if __name__ == '__main__':
     parser.add_argument('--milestones', nargs='+', type=int, default=[40, 70],
                         help='milestones for the learning rate decay')
     # training configs
-    parser.add_argument('--resume_current', type=str, default='./***/new_checkpoint_step_5.pth.tar',
+    parser.add_argument('--resume_current', type=str, default='./logs/new_checkpoint_step_5.pth.tar',
                         metavar='PATH')
-    parser.add_argument('--resume_old', type=str, default='./***/old_checkpoint_step_5.pth.tar',
+    parser.add_argument('--resume_old', type=str, default='./logs/old_checkpoint_step_5.pth.tar',
                         metavar='PATH')
     parser.add_argument('--evaluate', action='store_true',
                         help="evaluation only")
@@ -194,7 +178,7 @@ if __name__ == '__main__':
     parser.add_argument('--data-dir', type=str, metavar='PATH',
                         default=osp.join('***'))
     parser.add_argument('--logs-dir', type=str, metavar='PATH',
-                        default='***')
+                        default='./logs')
     parser.add_argument('--rr-gpu', action='store_true',
                         help="use GPU for accelerating clustering")
     main()

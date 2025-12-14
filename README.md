@@ -1,12 +1,5 @@
-## Distribution-aware Forgetting Compensation for Exemplar-Free Lifelong Person Re-identification
+## Distribution-aware Forgetting Compensation for Exemplar-Free Lifelong Person Re-identification [[Paper]]()
 
-<div align="center"> 
-  
-[![arXiv](https://img.shields.io/badge/arXiv-2504.15041-b31b1b?logo=arxiv)](https://arxiv.org/abs/2504.15041)
-
-</div>
-
-# Introduction
 ```
 Our work proposes a novel Distribution-aware Forgetting Compensation (DAFC) model that explores cross-domain shared representation learning and domain-specific distribution integration without relying on old exemplars or knowledge distillation.
 ```
@@ -29,12 +22,13 @@ pip install -r requirements.txt
 Training order-1 for training.
 
 ```
-python lifelong_train.py --data-dir=/your seen dataset path  --logs-dir==/save path --orders="order-1"
+python lifelong_train.py --data-dir=/your seen dataset path  --logs-dir==/save path --training_order="order-1"
 ```
 
 Training order-2 for training.
 
 ```
-python lifelong_train.py --data-dir=/your seen dataset path  --logs-dir==/save path --orders="order-2"
+python lifelong_train.py --data-dir=/your seen dataset path  --logs-dir==/save path --training_order="order-2"
 ```
+
 

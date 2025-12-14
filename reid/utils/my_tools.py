@@ -133,7 +133,7 @@ def select_replay_samples(model, dataset, training_phase=0, add_num=0, old_datas
     return data_loader_replay, replay_data
 
 
-def eval_func(epoch, evaluator, model, test_loader, name, training_phase, old_model=None, use_fsc=True):
+def eval_func(epoch, evaluator, model, test_loader, name, training_phase, old_model=None, use_fsc=True, query=None, gallery=None):
     evaluator.reset()
     model.eval()
     if old_model is not None:
@@ -159,7 +159,7 @@ def eval_func(epoch, evaluator, model, test_loader, name, training_phase, old_mo
                 evaluator_old.update((old_feat, pids, cids))
                 evaluator_fuse.update((fuse_feat, pids, cids))
 
-    cmc, mAP, _, _, _, _, _ = evaluator.compute()
+    cmc, mAP, _, _, _, _, _ = evaluator.compute(query, gallery)
     if old_model is not None:
         cmc_old, mAP_old, _, _, _, _, _ = evaluator_old.compute()
         cmc_fuse, mAP_fuse, _, _, _, _, _ = evaluator_fuse.compute()

@@ -546,8 +546,8 @@ class build_transformer(nn.Module):
             self.in_planes_proj = 1024
         self.num_classes = num_classes
 
-        self.classifier1 = nn.Linear(self.in_planes, self.num_classes, bias=False)
-        self.classifier1.apply(weights_init_classifier)
+        self.classifier = nn.Linear(self.in_planes, self.num_classes, bias=False)
+        self.classifier.apply(weights_init_classifier)
 
         self.bottleneck = nn.BatchNorm1d(self.in_planes)
         self.bottleneck.bias.requires_grad_(False)
@@ -639,8 +639,8 @@ class build_transformer(nn.Module):
         feat_fin = self.bottleneck_fin(output)
         #print("expert_outputs", expert_outputs.shape)
         if self.training:
-            cls_score_adapt = self.classifier1(feat_adapt)
-            cls_score_fin = self.classifier1(feat_fin)
+            cls_score_adapt = self.classifier(feat_adapt)
+            cls_score_fin = self.classifier(feat_fin)
             return cls_score_fin, cls_score_adapt, [output], [output_adapt], expert_outputs#, topk_indices
         else:
             return feat_fin
