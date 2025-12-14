@@ -30,5 +30,12 @@ Training order-2 for training.
 ```
 python lifelong_train.py --data-dir=/your seen dataset path  --logs-dir==/save path --training_order="order-2"
 ```
+## Testing
+```
+python evaluate.py --data-dir=/your test dataset path"
+```
 
+## Contact
+
+If you have any questions, please contact Shiben Liu at liushiben310@163.com.
 
