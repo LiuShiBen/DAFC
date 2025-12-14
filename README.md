@@ -1,11 +1,17 @@
 ## Distribution-aware Forgetting Compensation for Exemplar-Free Lifelong Person Re-identification [[Paper]]()
 
+<div align="center"> 
+
+🎯Our paper has been accepted by [IEEE Transactions on Multimedia 2025](https://arxiv.org/abs/2504.15041)
+</div>
+
+### Introduction
+
 ```
 Our work proposes a novel Distribution-aware Forgetting Compensation (DAFC) model that explores cross-domain shared representation learning and domain-specific distribution integration without relying on old exemplars or knowledge distillation.
 ```
-
 ![](./docs/DAFC.png)
-## Getting Started
+
 ### Requirements
 - Python 3.7
 - torch 1.10.0
@@ -30,12 +36,12 @@ Training order-2 for training.
 ```
 python lifelong_train.py --data-dir=/your seen dataset path  --logs-dir==/save path --training_order="order-2"
 ```
-## Testing
+### Testing
 ```
 python evaluate.py --data-dir=/your test dataset path"
 ```
 
-## Contact
+### Contact
 
 If you have any questions, please contact Shiben Liu at liushiben310@163.com.
 
